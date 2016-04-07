@@ -20,39 +20,38 @@
 </head>
 
 <body>
-
-    <nav>
-    <!-- Dropdown Structure -->
-    <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#!">one</a></li>
-        <li><a href="#!">two</a></li>
-        <li class="divider"></li>
-        <li><a href="#!">three</a></li>
-    </ul>
-
+    <div id="nav">
+    <nav class="grey darken-1">
     <!-- Mobile Structure -->
     <ul class="side-nav" id="mobile-demo">
-        <li><a href="register"> Register!</a></li>
-        <li><a href="login"> Login</a></li>
-        <li><a href="logout"> Logout</a></li>
-        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown</a></li>
+        <li><a href="#" class="all"> All Posts </a></li>
+        <li><a href="#" class="create"> Create Post </a></li>
+
+        <li><a href="register" class = "register"> Register!</a></li>
+        <li><a href="login" class = "login"> Login</a></li>
+        <li><a href="" class="message"> {{ user.username }}</a></li>
+        <li><a href="logout" class = "logout"> Logout</a></li>
     </ul>
 
 
     <div class="nav-wrapper">
-        <a href="/" class="brand-logo"> Hacker News v2.0</a>
         <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
 
+        <ul id="nav-mobile" class="left hide-on-med-and-down">  
+            </li><a href="/" class="center brand-logo"> Hacker News v2.0</a></li>
+            <li><a href="#" class="all"> All Posts </a></li>
+            <li><a href="#" class="create"> Create Post </a></li>
+        </ul>
+
         <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="register"> Register!</a></li>
-            <li><a href="login"> Login</a></li>
-            <li><a href="logout"> Logout</a></li>
-            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown <i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a href="register" class = "register"> Register!</a></li>
+            <li><a href="login" class = "login"> Login</a></li>
+            <li><a href="#" class="username"> {{ user.username }}</a></li>
+            <li><a href="logout" class = "logout"> Logout</a></li>
         </ul>   
         </div>
     </nav>
-
-
+</div>
 
         {% block content %}
         <!-- all content from other HTML pages go here -->

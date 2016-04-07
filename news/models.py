@@ -5,11 +5,18 @@ from django.utils import timezone #make sure to set the timezone
 
 # Create your models here.
 class UserProfile(models.Model):
-	user = models.OneToOneField(User)
-	'''
-	we can add aditional attributes but Included in the django user model are these attributes:
-	Username, Password, Email address, firstname, lastname
-	'''
+    user = models.OneToOneField(User)
+
+    def to_json(self):
+        return {
+            "email": user.email,
+            "username": user.username,
+        }
+
+    '''
+    we can add aditional attributes but Included in the django user model are these attributes:
+    Username, Password, Email address, firstname, lastname
+    '''
 
 class Post(models.Model):
     title = models.CharField(max_length=40)
@@ -35,6 +42,7 @@ class Post(models.Model):
     # this create a dictionary from an object to use with ajax
     def to_json(self):
         return {
+            "id": self.id,
             "title": self.title,
             "link": self.link,
             "content": self.content,
@@ -42,7 +50,7 @@ class Post(models.Model):
             "created_at": self.created_at, 
             "show": self.show,
             "votes": self.votes,
-            "user": self.user,
+            "user": self.user.username,
         }
 
 

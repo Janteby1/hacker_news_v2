@@ -1,7 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <h2 id="welcome">Welcome!</h2>
+    <div class= "button_div" id="answer_div">
+
+		<div class="parallax-container">
+			<div class="parallax"><img src="static/news.jpg"></div>
+		</div>
+
+		<div class="section white">
+			<div class="row container">
+				<h2> Welcome to Hacker News!</h2>
+	        	<h4>Register or Login above to get started</h4>
+				<br><br>	
+			</div>
+		</div>
+
+		<div class="parallax-container">
+			<div class="parallax"><img src="static/news.jpg"></div>
+		</div>
+    </div>
+
+{% include "register.html"%}
+{% include "login.html"%}
+{% include "create.html"%}
+{% include "all.html"%}
+
 
 {% endblock content %}
 
