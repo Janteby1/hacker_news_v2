@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^(?P<pk>[\d]+)/downcomment$', views.Comment_Down.as_view(), name='downcomment'),
 
     # url(r'^edit_comment/(?P<comment_slug>[A-Za-z0-9\-\_]+)$', views.Edit_Comment.as_view(), name='edit_comment'),
-    # url(r'^delete_comment/(?P<comment_slug>[A-Za-z0-9\-\_]+)$', views.Delete_Comment.as_view(), name='delete_comment'),
+    url(r'^(?P<pk>[\d]+)/deletecomment$', views.Delete_Comment.as_view(), name='deletecomment'),
 ]
 

@@ -74,6 +74,7 @@ class Comment(models.Model):
     # this create a dictionary from an object to use with ajax
     def to_json(self):
         return {
+            "id": self.id,
             "title": self.title,
             "link": self.link,
             "content": self.content,

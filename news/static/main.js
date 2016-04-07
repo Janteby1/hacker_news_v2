@@ -135,15 +135,21 @@ $(document).ready(function(){
 
     if(confirm("Are you sure you would like vote this up?")){
         var query_string = $(this).serialize() // returns all the data in your form
+        var url = $(this).attr("href")
+        var type = $(this).data("type");
 
         $.ajax({
             method: "POST",
-            url: $(this).attr("href"),
+            url: url,
             data: query_string,
         }).done(function(data, status){
                 alert("Voted Up!")
 
+        if (type === "post"){
             var template = $('#all-results').html();
+        } else {
+            var template = $('#all-comment-results').html();
+        }
             var renderM = Mustache.render(template,data);
             $('#answer_div').html(renderM);  
         });
@@ -157,15 +163,21 @@ $(document).ready(function(){
 
     if(confirm("Are you sure you would like vote this down?")){
         var query_string = $(this).serialize() // returns all the data in your form
+        var url = $(this).attr("href")
+        var type = $(this).data("type");
 
         $.ajax({
             method: "POST",
-            url: $(this).attr("href"),
+            url: url,
             data: query_string,
         }).done(function(data, status){
-                alert("Voted down!")
+                alert("Voted Down!")
 
+        if (type === "post"){
             var template = $('#all-results').html();
+        } else {
+            var template = $('#all-comment-results').html();
+        }
             var renderM = Mustache.render(template,data);
             $('#answer_div').html(renderM);  
         });
@@ -179,15 +191,20 @@ $(document).ready(function(){
 
     if(confirm("Are you sure you would like to delete this event?")){
         var query_string = $(this).serialize() // returns all the data in your form
+        var url = $(this).attr("href")
+        var type = $(this).data("type");
 
         $.ajax({
             method: "POST",
-            url: $(this).attr("href"),
+            url: url,
             data: query_string,
         }).done(function(data, status){
-                alert("Deleted")
 
+        if (type === "post"){
             var template = $('#all-results').html();
+        } else {
+            var template = $('#all-comment-results').html();
+        }
             var renderM = Mustache.render(template,data);
             $('#answer_div').html(renderM);  
         });
@@ -284,6 +301,8 @@ $(document).ready(function(){
         $('#answer_div').html(renderM);  
     });
 });
+
+
 
 
 

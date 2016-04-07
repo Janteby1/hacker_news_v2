@@ -231,7 +231,7 @@ class Comment_Up(View):
         comment.votes += 1
         comment.save()
 
-        comments = Comment.objects.filter(post=pk).order_by('-votes')
+        comments = Comment.objects.filter(pk=pk).order_by('-votes')
         res = [comment.to_json() for comment in comments]
 
         if res:
@@ -243,11 +243,11 @@ class Comment_Up(View):
 class Comment_Down(View):
     def post(self, request, pk):
         pk = pk
-        post = Post.objects.get(pk = pk)
-        post.votes -= 1
-        post.save()
+        comment = Comment.objects.get(pk = pk)
+        comment.votes -= 1
+        comment.save()
 
-        comments = Comment.objects.filter(post=pk).order_by('-votes')
+        comments = Comment.objects.filter(pk=pk).order_by('-votes')
         res = [comment.to_json() for comment in comments]
 
         if res:
@@ -255,3 +255,62 @@ class Comment_Down(View):
         else:
             return JsonResponse ({"response":"You have no Comments"})
 
+
+
+
+
+
+
+
+
+
+# class Edit_Comment(View):
+#     template = "edit_comment.html"
+
+#     # here we get the slug id passed in with the url 
+#     def get(self, request, comment_slug=None):
+#         # get the slug id from the object
+#         comment = Comment.objects.get(slug=comment_slug)
+#         # get the form and populate it with the value that is already there, AKA what we want to edit
+#         comment_form = CommentForm(instance=comment)
+#         # send the comment form also
+#         context = {
+#             "comment": comment,
+#             "CommentForm": comment_form}
+#         return render(request, self.template, context)
+
+
+#     def post(self, request, comment_slug=None):
+#         # get the slug id from the object
+#         comment = Comment.objects.get(slug=comment_slug)  
+#         # this time we get the NEW, EDITED content from the form 
+#         comment_form = CommentForm(data=request.POST, instance=comment)
+
+#         if comment_form.is_valid():
+#             # if the form is valid we save it to the db
+#             comment_form.save()
+#             return redirect("news:index")
+#         else:
+#             context = {
+#                 "comment": comment,
+#                 "CommentForm": comment_form,}
+#             # if it is not valid just send it back with the errors attached
+#             return render(request, self.template, context)
+
+
+class Delete_Comment(View):
+    def post(self, request, pk):
+        comment = Comment.objects.get(pk=pk)
+        comment.delete()
+
+        comments = Comment.objects.all().order_by('-votes')
+        res = [comment.to_json() for comment in comments]
+
+        if res:
+            return JsonResponse({"Message": "Deleted", "comments": res})
+        else:
+            return JsonResponse ({"response":"Invalid information"})
+
+
+
+            
