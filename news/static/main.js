@@ -26,7 +26,6 @@ $(document).ready(function(){
         url: "register",
         data: query_string,
     }).done(function(data, status){
-            console.log(data);//for testing 
 
 		if (data.success){
 			////// if they registered then display the Login ////////
@@ -58,7 +57,6 @@ $(document).ready(function(){
         url: "login",
         data: query_string,
     }).done(function(data, status){
-            console.log(data);//for testing 
 
         $('#answer_div').html(data.Message);
         $('#answer_div').append("<br><br>");
@@ -78,7 +76,6 @@ $(document).ready(function(){
         url: "logout",
         data: query_string,
     }).done(function(data, status){
-            console.log(data);//for testing 
 
     $('#answer_div').html(" <h2> Goodbye, See you soon!</h2>");
     $('#answer_div').append(data.Message);
@@ -105,14 +102,10 @@ $(document).ready(function(){
         url: "create",
         data: query_string,
     }).done(function(data, status){
-            console.log(data);//for testing 
 
-    	$('#answer_div').append("<br><br>");
-    	$('#answer_div').append(data.Message);
-
-        // var template = $('#all-results').html();
-        // var renderM = Mustache.render(template,data);
-        // $('#answer_div').html(renderM);  
+        var template = $('#all-results').html();
+        var renderM = Mustache.render(template,data);
+        $('#answer_div').html(renderM);  
         });
     });
 
@@ -128,7 +121,6 @@ $(document).ready(function(){
         url: "all",
         data: query_string,
     }).done(function(data, status){
-            console.log(data);//for testing 
 
         var template = $('#all-results').html();
         var renderM = Mustache.render(template,data);
@@ -149,7 +141,6 @@ $(document).ready(function(){
             url: $(this).attr("href"),
             data: query_string,
         }).done(function(data, status){
-                console.log(data);//for testing 
                 alert("Voted Up!")
 
             var template = $('#all-results').html();
@@ -172,7 +163,6 @@ $(document).ready(function(){
             url: $(this).attr("href"),
             data: query_string,
         }).done(function(data, status){
-                console.log(data);//for testing 
                 alert("Voted down!")
 
             var template = $('#all-results').html();
@@ -180,6 +170,119 @@ $(document).ready(function(){
             $('#answer_div').html(renderM);  
         });
     };
+});
+
+
+///// Delete Post/////
+    $('#answer_div').on('click', '#delete_button',function(event){
+    event.preventDefault();
+
+    if(confirm("Are you sure you would like to delete this event?")){
+        var query_string = $(this).serialize() // returns all the data in your form
+
+        $.ajax({
+            method: "POST",
+            url: $(this).attr("href"),
+            data: query_string,
+        }).done(function(data, status){
+                alert("Deleted")
+
+            var template = $('#all-results').html();
+            var renderM = Mustache.render(template,data);
+            $('#answer_div').html(renderM);  
+        });
+    };
+});
+
+
+///// Edit Event /////
+    $('#answer_div').on('click', "#edit_button", function(event){ //on click
+        event.preventDefault();
+
+    $.ajax({
+        method: "GET",
+        url: $(this).attr("href"),
+    }).done(function(data, status){
+
+    	// this just send back the form with the right info already filled out 
+        var template = $('#edit-template').html();
+        var renderM = Mustache.render(template,data);
+        $('#answer_div').html(renderM);  
+    });
+
+    $('#answer_div').on('submit', '#edit_form',function(event){ // on submit
+    event.preventDefault();
+
+    var query_string = $(this).serialize() // returns all the data in your form
+
+    $.ajax({
+        method: "POST",
+        url: $(this).attr("action"),
+        data: query_string,
+    }).done(function(data, status){
+
+        var template = $('#all-results').html();
+        var renderM = Mustache.render(template,data);
+        $('#answer_div').html(renderM);  
+        });
+    });
+});
+
+
+///// Create Comment /////
+    $('#answer_div').on('click', "#comment_button", function(event){ //on click
+        event.preventDefault();
+
+    $.ajax({
+        method: "GET",
+        url: $(this).attr("href"),
+    }).done(function(data, status){
+    	console.log(data)
+
+    	// this just send back the form with the right info already filled out 
+        var template = $('#comment-template').html();
+        var renderM = Mustache.render(template,data);
+        $('#answer_div').html(renderM);  
+    });
+
+
+    $('#answer_div').on('submit', '#comment_form',function(event){
+    event.preventDefault();
+
+    var query_string = $(this).serialize() // returns all the data in your form
+
+    $.ajax({
+        method: "POST",
+        url: $(this).attr("action"),
+        data: query_string,
+    }).done(function(data, status){
+
+        $('#answer_div').append(data.Message);
+
+        // var template = $('#all-results').html();
+        // var renderM = Mustache.render(template,data);
+        // $('#answer_div').html(renderM);  
+        });
+    });
+});
+
+
+///// Get Post Comments/////
+    $('#answer_div').on('click', '#getcomments_button',function(event){
+    event.preventDefault();
+
+    var query_string = $(this).serialize() // returns all the data in your form
+
+    $.ajax({
+        method: "POST",
+        url: $(this).attr("href"),
+        data: query_string,
+    }).done(function(data, status){
+
+        var template = $('#all-comment-results').html();
+        var renderM = Mustache.render(template,data);
+        $('#answer_div').html(renderM);  
+    });
 });
 
 

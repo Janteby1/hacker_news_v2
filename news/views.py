@@ -17,13 +17,11 @@ class Index(View):
         user_form = UserForm()
         register_form = RegisterForm()
         post_form = PostForm()
-        comment_form = CommentForm()
 
         context = {
             'user_form': user_form,
             "register_form":register_form,
             "post_form": post_form,
-            "comment_form": comment_form,
             }
 
         return render(request, "index.html", context)
@@ -102,7 +100,7 @@ class Create_Post(View):
 
 class Get_All(View):
     def post(self, request):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-votes')
         res = [post.to_json() for post in posts]
         if res:
             return JsonResponse({"posts": res})
@@ -117,7 +115,7 @@ class Up(View):
         post.votes += 1
         post.save()
 
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-votes')
         res = [post.to_json() for post in posts]
 
         if post:
@@ -133,7 +131,7 @@ class Down(View):
         post.votes -= 1
         post.save()
 
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-votes')
         res = [post.to_json() for post in posts]
 
         if post:
@@ -142,12 +140,118 @@ class Down(View):
             return JsonResponse ({"response":"Invalid information"})
 
 
+class Delete(View):
+    def post(self, request, pk):
+        pk = pk
+        post = Post.objects.get(pk = pk)
+        post.delete()
+
+        posts = Post.objects.all().order_by('-votes')
+        res = [post.to_json() for post in posts]
+
+        if res:
+            return JsonResponse({"Message": "Deleted", "posts": res})
+        else:
+            return JsonResponse ({"response":"Invalid information"})
 
 
+class Edit(View):
+    template = "events/index.html"
+
+    def get(self, request, pk=None):
+        post = Post.objects.get(pk=pk)
+        form = PostForm(instance=post)
+
+        context = {
+            "post_id": post.id,
+            "edit_form": form.as_p(),}
+        return JsonResponse(context)
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        if not post:
+            return JsonResponse ({"Message":"Invalid information"})
+        # this time we get the form with the data
+        form = PostForm(data=request.POST, instance=post)
+
+        if form.is_valid():
+            event = form.save()
+            res = post.to_json()
+            return JsonResponse({"Message": "Edited succesfull", "posts": res})
+        else:
+            return JsonResponse ({"Message":"Invalid information"})
 
 
+class Make_Comment(View):
+    def get(self, request, pk=None):
+        post = Post.objects.get(pk=pk)
+        comment_form = CommentForm()
+
+        context = {
+            "post_id": post.id,
+            "comment_form": comment_form.as_p(),}
+        return JsonResponse(context)
+
+    def post(self, request, pk):
+        if not request.user.is_authenticated():
+            # if there is no user logged in they can not submit a comment 
+            return HttpResponseForbidden(render (request, "403.html"))
+
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            post = Post.objects.get(pk=pk)
+            comment = form.save(commit=False)
+            # save the user and post to this specific comment, AKA add an FK
+            comment.user = user
+            comment.post = post
+            comment.save()
+
+            res = comment.to_json()
+            return JsonResponse({"Message": "Commented", "comments": res})
+        else:
+            return JsonResponse ({"Message":"Invalid information"})
 
 
+class Get_Post_Comments(View):
+    def post(self, request, pk):
+        comments = Comment.objects.filter(post=pk).order_by('-votes')
+        res = [comment.to_json() for comment in comments]
+
+        if res:
+            return JsonResponse({"comments": res})
+        else:
+            return JsonResponse ({"response":"You have no Comments"})
 
 
+class Comment_Up(View):
+    def post(self, request, pk):
+        pk = pk
+        comment = Comment.objects.get(pk = pk)
+        comment.votes += 1
+        comment.save()
+
+        comments = Comment.objects.filter(post=pk).order_by('-votes')
+        res = [comment.to_json() for comment in comments]
+
+        if res:
+            return JsonResponse({"comments": res})
+        else:
+            return JsonResponse ({"response":"You have no Comments"})
+
+
+class Comment_Down(View):
+    def post(self, request, pk):
+        pk = pk
+        post = Post.objects.get(pk = pk)
+        post.votes -= 1
+        post.save()
+
+        comments = Comment.objects.filter(post=pk).order_by('-votes')
+        res = [comment.to_json() for comment in comments]
+
+        if res:
+            return JsonResponse({"comments": res})
+        else:
+            return JsonResponse ({"response":"You have no Comments"})
 

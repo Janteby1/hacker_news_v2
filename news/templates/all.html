@@ -8,33 +8,48 @@
         {{#posts}}
 
     <div class="row">
-        <div class="col s12 m6">
+        <div class="col s12 m9">
             <div class="card blue-grey darken-1">
                 <div class="card-content white-text">
                     <span class="card-title"><div class="entry">Title: {{title}}<br></div></span>
                         <div class="entry">Content: {{content}}<br></div>
                         <div class="entry">Link: {{link}}<br></div>
                         <div class="entry">Author: {{user}}<br></div>
-                        <div class="entry">Creator: {{created_at}}<br></div>
+                        <div class="entry">Created: {{created_at}}<br></div>
                         <div class="entry">Votes: {{votes}}<br></div>
                         <br>
                 </div>
 
                 <div class="card-action">
                     <div class="row">
-                        <div class="col s2 m2 l2">
-                            <form action="/events/{{id}}/delete" method="POST" class='delete_form'>
-                            <button class="btn-floating btn-large waves-effect waves-light red" id="register_button" type="submit" name="action"><i class="material-icons">delete</i></button>
-                            </form>
+                        <div class="col s1.5 m1.5 l1.5">
+                        <a href="/{{id}}/delete" class="btn-floating btn-large waves-effect waves-light red" id="delete_button"> <i class="material-icons right">delete</i></a>
                         </div>
 
-                        <div class="col s2 m2 l2">
-                        <a href="{{{id}}}/up" class="btn-floating btn-large waves-effect waves-light green" id="up_button"> <i class="material-icons right">trending_up</i></a>
+                        <div class="col s1.5 m1.5 l1.5">
+                        <a href="{{id}}/edit" class="btn-floating btn-large waves-effect waves-light blue" id="edit_button"> <i class="material-icons right">mode_edit</i></a>
                         </div>
 
-                        <div class="col s2 m2 l2">
-                        <a href="{{id}}/down" class="btn-floating btn-large waves-effect waves-light red" id="down_button"> <i class="material-icons right">trending_down</i></a>
+                        <div class="col s1.5 m1.5 l1.5">
+                        <a href="{{id}}/comment" class="btn-floating btn-large waves-effect waves-light green" id="comment_button"> <i class="material-icons right">comment</i></a>
                         </div>
+
+                        <div class="col s5 m5 l5">
+                        <a href="#" id="spacer"> <i class="material-icons right"></i></a>
+                        </div>
+
+                        <div class="col s1 m1 l1">
+                        <a href="{{{id}}}/up" class="btn-floating btn-large waves-effect waves-light indigo" id="up_button"> <i class="material-icons right">thumb_up </i></a>
+                        </div>
+
+                        <div class="col s1 m1 l1">
+                        <a href="{{id}}/down" class="btn-floating btn-large waves-effect waves-light indigo" id="down_button"> <i class="material-icons right">thumb_down</i></a>
+                        </div>
+                        
+                        <div class="col s1.5 m1.5 l1.5">
+                        <a href="{{id}}/getcomments" class="btn-floating btn-large waves-effect waves-light purple" id="getcomments_button"> <i class="material-icons right">toc</i></a>
+                        </div>
+
                     </div>
 
                 </div>
@@ -45,7 +60,7 @@
         {{/posts}}
 
         {{^posts}}
-        <h4>You currently have no events, create one above!</h4>
+        <h4>You currently have no posts, create one above!</h4>
         {{/posts}}
 
     </div>

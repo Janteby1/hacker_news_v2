@@ -27,7 +27,6 @@ class Post(models.Model):
     created_at = models.DateTimeField(editable=False)
     updated_at = models.DateTimeField()
 
-    show = models.BooleanField(default=True)
     votes = models.IntegerField(default=0)
     user = models.ForeignKey(User, default = 1) # adds a FK
 
@@ -48,7 +47,6 @@ class Post(models.Model):
             "content": self.content,
             "slug": self.slug,
             "created_at": self.created_at, 
-            "show": self.show,
             "votes": self.votes,
             "user": self.user.username,
         }
@@ -62,7 +60,6 @@ class Comment(models.Model):
     slug = models.SlugField(max_length=40)
     created_at = models.DateTimeField(editable=False)
     
-    show = models.BooleanField(default=True)
     votes = models.IntegerField(default=0)
     user = models.ForeignKey(User) # adds a FK for user 
     post = models.ForeignKey(Post) # adds a FK for the post it belongs to
@@ -82,7 +79,6 @@ class Comment(models.Model):
             "content": self.content,
             "slug": self.slug,
             "created_at": self.created_at, 
-            "show": self.show,
             "votes": self.votes,
             "user": self.user.id,
             "post": self.post.id,

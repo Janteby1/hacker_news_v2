@@ -1,0 +1,19 @@
+    <script id="comment-template" type="x-tmpl-mustache/template">
+
+        <h4>Comment</h4>
+        
+        {% verbatim %}
+        <form action="{{post_id}}/comment" id='comment_form' method="POST">
+        {% endverbatim %}
+
+            {% csrf_token %}
+
+            {% verbatim %}
+            {{{ comment_form }}}
+            {% endverbatim %}
+
+            <input class="btn waves-effect waves-light" id="submit_button" type="submit" name="action" value= "Create Comment" <i class="material-icons right"></i>
+        </form>
+
+    </script>
+    

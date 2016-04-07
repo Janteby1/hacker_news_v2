@@ -1,0 +1,47 @@
+{%verbatim%}
+	<script id="all-comment-results" type="x-tmpl-mustache">
+<div id="pic">
+
+        <br>
+        <h4>Comments</h4>
+
+        {{#comments}}
+
+    <div class="row">
+        <div class="col s10 m6">
+            <div class="card blue darken-1">
+                <div class="card-content white-text">
+                    <span class="card-title"><div class="entry">Title: {{title}}<br></div></span>
+                        <div class="entry">Content: {{content}}<br></div>
+                        <div class="entry">Link: {{link}}<br></div>
+                        <div class="entry">Author: {{user}}<br></div>
+                        <div class="entry">Created: {{created_at}}<br></div>
+                        <div class="entry">Votes: {{votes}}<br></div>
+                        <br>
+                </div>
+
+                <div class="card-action">
+                    <div class="col s2 m2 l2">
+                    <a href="{{{id}}}/up" class="btn-floating btn-large waves-effect waves-light blue-grey darken-1" id="up_button"> <i class="material-icons right">thumb_up </i></a>
+                    </div>
+
+                    <div class="col s2 m2 l2">
+                    <a href="{{id}}/down" class="btn-floating btn-large waves-effect waves-light blue-grey" id="down_button"> <i class="material-icons right">thumb_down</i></a>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+        {{/comments}}
+
+        {{^comments}}
+        <h4>You currently have no comments, create one above!</h4>
+        {{/comments}}
+
+    </div>
+
+	</script>
+{%endverbatim%}
